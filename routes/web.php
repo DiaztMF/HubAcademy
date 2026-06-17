@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\UserImportController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\LMS\CourseController;
 use App\Http\Controllers\LMS\CourseEnrollmentController;
@@ -38,6 +39,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/create', [PortfolioController::class, 'create'])->name('create');
         Route::post('/', [PortfolioController::class, 'store'])->name('store');
         Route::get('/{portfolio}', [PortfolioController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('logbook')->name('logbook.')->group(function () {
+        Route::get('/', [LogbookController::class, 'index'])->name('index');
+        Route::get('/create', [LogbookController::class, 'create'])->name('create')->middleware('role:student');
+        Route::post('/', [LogbookController::class, 'store'])->name('store')->middleware('role:student');
+        Route::post('/{logbook}/verify', [LogbookController::class, 'verify'])->name('verify')->middleware('role:teacher,industry_mentor');
     });
 });
 

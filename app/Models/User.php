@@ -53,6 +53,21 @@ class User extends Authenticatable implements PasskeyUser
         return $this->hasMany(Portfolio::class);
     }
 
+    public function mentor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'mentor_id');
+    }
+
+    public function mentees(): HasMany
+    {
+        return $this->hasMany(User::class, 'mentor_id');
+    }
+
+    public function logbooks(): HasMany
+    {
+        return $this->hasMany(Logbook::class, 'student_id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

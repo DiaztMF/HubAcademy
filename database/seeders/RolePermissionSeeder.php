@@ -52,5 +52,13 @@ class RolePermissionSeeder extends Seeder
         $mentor->givePermissionTo([
             'logbook.view', 'logbook.verify',
         ]);
+
+        \App\Models\Category::create(['name' => 'General', 'slug' => 'general', 'description' => 'General discussion']);
+        \App\Models\Category::create(['name' => 'Internal Announcements', 'slug' => 'internal-announcements', 'is_protected' => true, 'description' => 'Official announcements']);
+
+        $admin = \App\Models\User::role('admin')->first();
+        if ($admin) {
+            $admin->notify(new \App\Notifications\TestNotification());
+        }
     }
 }

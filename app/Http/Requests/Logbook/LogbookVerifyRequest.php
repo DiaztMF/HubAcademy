@@ -8,7 +8,7 @@ class LogbookVerifyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->hasAnyRole(['teacher', 'industry_mentor']);
+        return $this->user()?->hasAnyRole(['teacher', 'industry-mentor']);
     }
 
     public function rules(): array

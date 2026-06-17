@@ -68,6 +68,26 @@ class User extends Authenticatable implements PasskeyUser
         return $this->hasMany(Logbook::class, 'student_id');
     }
 
+    public function chatConversations(): BelongsToMany
+    {
+        return $this->belongsToMany(ChatConversation::class, 'chat_participants', 'user_id', 'conversation_id')->withTimestamps();
+    }
+
+    public function forumPosts(): HasMany
+    {
+        return $this->hasMany(ForumPost::class);
+    }
+
+    public function forumComments(): HasMany
+    {
+        return $this->hasMany(ForumComment::class);
+    }
+
+    public function news(): HasMany
+    {
+        return $this->hasMany(News::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

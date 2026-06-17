@@ -1,5 +1,17 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Users } from 'lucide-react';
+import {
+    BookOpen,
+    ClipboardList,
+    FolderGit2,
+    GraduationCap,
+    LayoutGrid,
+    MessageCircle,
+    Newspaper,
+    NotebookPen,
+    Bell,
+    ScrollText,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,8 +25,15 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import admin from '@/routes/admin';
 import { dashboard } from '@/routes';
+import { index as attendanceIndex } from '@/routes/attendance';
+import { index as chatIndex } from '@/routes/chat';
+import { index as forumIndex } from '@/routes/forum';
+import lms from '@/routes/lms';
+import { index as logbookIndex } from '@/routes/logbook';
+import { index as newsIndex } from '@/routes/news';
+import { index as notificationIndex } from '@/routes/notifications';
+import { index as portfolioIndex } from '@/routes/portfolio';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -22,6 +41,48 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Courses',
+        href: lms.courses.index(),
+        icon: GraduationCap,
+    },
+    {
+        title: 'Attendance',
+        href: attendanceIndex(),
+        icon: ClipboardList,
+        roles: ['admin', 'teacher'],
+    },
+    {
+        title: 'Portfolio',
+        href: portfolioIndex(),
+        icon: FolderGit2,
+    },
+    {
+        title: 'Logbook',
+        href: logbookIndex(),
+        icon: NotebookPen,
+        roles: ['admin', 'teacher', 'student', 'industry-mentor'],
+    },
+    {
+        title: 'Forum',
+        href: forumIndex(),
+        icon: MessageCircle,
+    },
+    {
+        title: 'Chat',
+        href: chatIndex(),
+        icon: ScrollText,
+    },
+    {
+        title: 'News',
+        href: newsIndex(),
+        icon: Newspaper,
+    },
+    {
+        title: 'Notifications',
+        href: notificationIndex(),
+        icon: Bell,
     },
     {
         title: 'Import Users',
@@ -34,7 +95,7 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: 'https://github.com/DiaztMF/HubAcademy',
         icon: FolderGit2,
     },
     {

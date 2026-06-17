@@ -80,8 +80,10 @@ return [
         */
         'photos' => [
             'driver' => env('PHOTOS_DISK', 'local') === 'r2' ? 's3' : 'local',
-            'root' => storage_path('app/public/photos'),
-            'url' => rtrim((string) env('APP_URL', 'http://localhost'), '/').'/storage/photos',
+            'root' => env('PHOTOS_DISK', 'local') === 'r2' ? '' : storage_path('app/public/photos'),
+            'url' => env('PHOTOS_DISK', 'local') === 'r2'
+                ? rtrim((string) env('R2_URL', ''), '/').'/'.env('R2_BUCKET', 'hub-academy')
+                : rtrim((string) env('APP_URL', 'http://localhost'), '/').'/storage/photos',
             'key' => env('R2_ACCESS_KEY_ID'),
             'secret' => env('R2_SECRET_ACCESS_KEY'),
             'region' => env('R2_DEFAULT_REGION', 'auto'),

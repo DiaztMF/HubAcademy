@@ -1,25 +1,51 @@
 import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { BookOpen, UserCheck, Users } from 'lucide-react';
+import { DataTable } from '@/components/ui/data-table';
+import { StatCard } from '@/components/ui/stat-card';
 import { dashboard } from '@/routes';
 
-export default function Dashboard() {
+const sampleColumns = [
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'role', label: 'Role', sortable: true },
+    { key: 'status', label: 'Status' },
+];
+
+const sampleData = [
+    { name: 'Adi Pratama', role: 'Student', status: 'Active' },
+    { name: 'Budi Santoso', role: 'Student', status: 'Active' },
+    { name: 'Mr. Andi', role: 'Teacher', status: 'Active' },
+];
+
+export default function Dashboard({ stats, role }: { stats?: Record<string, number>; role?: string }) {
     return (
         <>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
+                    <StatCard
+                        title="Students"
+                        value={stats?.total_students ?? 0}
+                        icon={Users}
+                    />
+                    <StatCard
+                        title="Teachers"
+                        value={stats?.total_teachers ?? 0}
+                        icon={UserCheck}
+                    />
+                    <StatCard
+                        title="Courses"
+                        value={stats?.total_courses ?? 0}
+                        icon={BookOpen}
+                    />
                 </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                <div className="space-y-3">
+                    <h3 className="text-base font-medium">Recent Users</h3>
+                    <DataTable
+                        columns={sampleColumns}
+                        data={sampleData}
+                        keyExtractor={(item) => item.name}
+                    />
                 </div>
             </div>
         </>

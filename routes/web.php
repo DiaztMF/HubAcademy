@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserImportController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LMS\CourseController;
 use App\Http\Controllers\LMS\CourseEnrollmentController;
@@ -24,6 +25,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('courses/{course}', [CourseController::class, 'show'])->name('courses.show');
         Route::post('courses/join', [CourseEnrollmentController::class, 'store'])->name('courses.join');
         Route::get('courses/{course}/topics/{topic}', [TopicController::class, 'show'])->name('topics.show');
+    });
+
+    Route::middleware(['role:teacher'])->prefix('attendance')->name('attendance.')->group(function () {
+        Route::get('/', [AttendanceController::class, 'index'])->name('index');
+        Route::post('/', [AttendanceController::class, 'store'])->name('store');
     });
 });
 

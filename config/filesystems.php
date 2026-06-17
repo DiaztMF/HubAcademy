@@ -60,10 +60,34 @@ return [
             'report' => false,
         ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | Photos Disk
+        |--------------------------------------------------------------------------
+        | By default uses local storage (storage/app/public/photos).
+        | Set PHOTOS_DISK=r2 in .env to switch to Cloudflare R2.
+        |
+        | R2 setup:
+        |   1. Buat bucket "hubacademy" di Cloudflare R2, set ke Public Access
+        |   2. Generate API Token dengan permission Object Read & Write
+        |   3. Isi .env:
+        |      PHOTOS_DISK=r2
+        |      R2_ACCESS_KEY_ID=<Access Key ID>
+        |      R2_SECRET_ACCESS_KEY=<Secret Access Key>
+        |      R2_BUCKET=hubacademy
+        |      R2_URL=https://pub-<hash>.r2.dev/hubacademy
+        |      R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
+        */
         'photos' => [
-            'driver' => env('PHOTOS_DISK', 'local'),
+            'driver' => env('PHOTOS_DISK', 'local') === 'r2' ? 's3' : 'local',
             'root' => storage_path('app/public/photos'),
             'url' => rtrim((string) env('APP_URL', 'http://localhost'), '/').'/storage/photos',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => env('R2_DEFAULT_REGION', 'auto'),
+            'bucket' => env('R2_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -71,21 +95,9 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Cloudflare R2 (Production)
+        | Cloudflare R2 (standalone disk)
         |--------------------------------------------------------------------------
-        | Set PHOTOS_DISK=r2 and fill R2_* env vars to use Cloudflare R2 storage.
-        | Requires: composer require league/flysystem-aws-s3-v3
-        |
-        | 1. Buat bucket "hubacademy" di dashboard Cloudflare R2
-        | 2. Generate API Token (read+write permission)
-        | 3. Set bucket ke Public (Allow Access)
-        | 4. Isi .env:
-        |    PHOTOS_DISK=r2
-        |    R2_ACCESS_KEY_ID=<Access Key ID>
-        |    R2_SECRET_ACCESS_KEY=<Secret Access Key>
-        |    R2_BUCKET=hubacademy
-        |    R2_URL=https://pub-<hash>.r2.dev/hubacademy
-        |    R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
+        | Use via Storage::disk('r2') if needed. Not used by photos disk directly.
         */
         'r2' => [
             'driver' => 's3',

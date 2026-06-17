@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -24,13 +25,13 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::findOrCreate($permission);
         }
 
-        $admin = Role::create(['name' => 'admin']);
+        $admin = Role::findOrCreate('admin');
         $admin->givePermissionTo(Permission::all());
 
-        $teacher = Role::create(['name' => 'teacher']);
+        $teacher = Role::findOrCreate('teacher');
         $teacher->givePermissionTo([
             'courses.create', 'courses.edit', 'courses.delete', 'courses.view',
             'attendance.create', 'attendance.view', 'attendance.edit',
@@ -39,7 +40,7 @@ class RolePermissionSeeder extends Seeder
             'news.create', 'news.edit',
         ]);
 
-        $student = Role::create(['name' => 'student']);
+        $student = Role::findOrCreate('student');
         $student->givePermissionTo([
             'courses.view', 'courses.enroll',
             'logbook.create', 'logbook.view', 'logbook.edit',
@@ -48,7 +49,7 @@ class RolePermissionSeeder extends Seeder
             'chat.send',
         ]);
 
-        $mentor = Role::create(['name' => 'industry-mentor']);
+        $mentor = Role::findOrCreate('industry-mentor');
         $mentor->givePermissionTo([
             'logbook.view', 'logbook.verify',
         ]);
